@@ -1,0 +1,26 @@
+{% extends 'main.html' %}
+
+{% block title %} <title>Home</title> {% endblock %}
+
+{% block content %}
+
+<h1 style="text-align: center; margin:30px 0 30px 0;">Freelance Talent Marketplace</h1>
+
+<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+  {% for talent in talents %}
+    <div class="card" style="width: 18rem;">
+      <p style="text-align: center; margin-top:16px;">ID: {{ talent.talentCode }}</p>
+      <img style="width:100px; border-radius:50px; align-self: center;" src="{{ talent.image }}" class="card-img-top" alt="...">
+      <div style="text-align: center;" class="card-body">
+        <h5 class="card-title">{{ talent.positionName }}</h5>
+        <p class="card-text">{{ talent.bio |slice:":50" }}</p>
+        <hr>
+        <p class="card-text">Skills: {{ talent.skills }}</p>
+        <a href="#" class="btn btn-primary">See Profile</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% endblock %}
+
