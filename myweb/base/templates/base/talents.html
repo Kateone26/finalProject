@@ -1,0 +1,23 @@
+<div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+  {% for talent in talents %}
+    <div class="card" style="width: 18rem;">
+      <p style="text-align: center; margin-top:16px;">ID: {{ talent.talentCode }}</p>
+      <img style="max-width:100%; width:100px; height:100px; border-radius:50px; align-self: center; object-fit:cover;" src="{{ talent.image }}" class="card-img-top" alt="...">
+      <div style="text-align: center;" class="card-body">
+        <h5 class="card-title">
+          {% for position in talent.positions.all %}
+            {{ position.name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </h5>
+        <p class="card-text">{{ talent.bio |slice:":50" }}</p>
+        <hr>
+        <p class="card-text">Skills:
+          {% for skill in talent.skills.all %}
+            {{ skill.name }}{% if not forloop.last %}, {% endif %}
+          {% endfor %}
+        </p>
+        <a href="#" class="btn btn-primary">See Profile</a>
+      </div>
+    </div>
+  {% endfor %}
+</div>

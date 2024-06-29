@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Talents
+from .models import Talents, User
 
 
 # Create your views here.
@@ -18,3 +18,10 @@ def about(request):
 
 def test(request):
     return render(request, 'base/test.html')
+
+
+def profile(request, pk):
+    user = User.objects.get(id=pk)
+    talents = user.talents.all()
+    context = {"talents": talents}
+    return render(request, 'base/profile.html', context)
