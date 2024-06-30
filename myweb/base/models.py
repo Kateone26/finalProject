@@ -19,6 +19,13 @@ class Skill(models.Model):
         return self.name
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
 class Talents(models.Model):
     talentCode = models.CharField(max_length=20)
     image = models.CharField(max_length=300)
@@ -27,13 +34,14 @@ class Talents(models.Model):
     bio = models.TextField(max_length=200)
     # skills = models.CharField(max_length=500)
     skills = models.ManyToManyField(Skill, related_name='talents')
+    category = models.ManyToManyField(Category, related_name='talents')
 
     def __str__(self):
         return f"{self.talentCode} {self.positions}"
 
 
 class User(AbstractUser):
-    talents = models.ManyToManyField(Talents, related_name='talents', blank=True)
+    talents = models.ManyToManyField(Talents, related_name='users', blank=True)
 
 
 # name / level / flag / country / hourly rate / monthly rate / categories / language skills / industries / personal info / education / centificates and trainings / experience / projects /
