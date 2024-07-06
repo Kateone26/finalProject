@@ -21,9 +21,20 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'profile' request.user.id %}">Profile</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'logout' %}">Log out</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'login' %}">Log in</a>
+          </li>
+          <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'registration' %}">Register</a>
+          </li>
+
         {% endif %}
       </ul>
-      <form class="d-flex" role="search" action="about">
+      <form class="d-flex" role="search" action="">
         <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>

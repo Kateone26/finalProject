@@ -6,7 +6,7 @@
 <h1 style="text-align: center; margin:30px 0 30px 0;">{{ heading }}</h1>
 
 <div style="display: flex; gap:50px;">
-    <div>
+    <div style="margin-left:30px;">
       <h2>Categories:</h2>
       <br>
       <hr>
@@ -37,7 +37,17 @@
                 {{ skill.name }}{% if not forloop.last %}, {% endif %}
               {% endfor %}
             </p>
-            <a href="#" class="btn btn-success">See Profile</a>
+
+            {% if request.user.is_authenticated %}
+              <a href="#" class="btn btn-success">See Profile</a>
+
+              {% if talent in request.user.talents.all %}
+                <a href="{% url 'delete' talent.id %}" class="btn btn-success">Delete</a>
+              {% else %}
+                <a href="{% url 'adding' talent.id %}" class="btn btn-success">Add</a>
+              {% endif %}
+            {% endif %}
+
           </div>
         </div>
       {% endfor %}
