@@ -7,14 +7,17 @@
   <form method="POST" action="">
         {% csrf_token %}
         <h2>Log in here</h2> <br>
-        <label>Username:</label><br>
-        <input type="text" name="username" placeholder="Username"><br><br>
-        <label>Password:</label><br>
-        <input type="password" name="password1" placeholder="Password"><br><br>
-        <label>Repeat Password:</label><br>
-        <input type="password" name="password2" placeholder="Password"><br><br>
+        {{ form.as_p }}
+<!--        <label>Username:</label><br>-->
+<!--        <input type="text" name="username" placeholder="Username"><br><br>-->
+<!--        <label>Password:</label><br>-->
+<!--        <input type="password" name="password1" placeholder="Password"><br><br>-->
+<!--        <label>Repeat Password:</label><br>-->
+<!--        <input type="password" name="password2" placeholder="Password"><br><br>-->
         <input type="submit" value="Register">
-
+        <br><br>
+        <p>Are you registered?</p>
+        <a href="{% url 'login' %}">Login</a>
     </form>
 {% endblock %}
 

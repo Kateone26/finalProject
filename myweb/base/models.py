@@ -28,13 +28,14 @@ class Category(models.Model):
 
 class Talents(models.Model):
     talentCode = models.CharField(max_length=20)
-    image = models.CharField(max_length=300)
+    image = models.ImageField(null=True, blank=True)
     # positionName = models.CharField(max_length=100)
     positions = models.ManyToManyField(Position, related_name='talents')
     bio = models.TextField(max_length=200)
     # skills = models.CharField(max_length=500)
     skills = models.ManyToManyField(Skill, related_name='talents')
     category = models.ManyToManyField(Category, related_name='talents')
+    file = models.FileField(null=True)
 
     def __str__(self):
         return f"{self.talentCode} {self.positions}"

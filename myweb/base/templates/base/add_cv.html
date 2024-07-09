@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+
+{% block title %} <title>Add CV</title> {% endblock %}
+
+{% block content %}
+  <h1>Add your CV here:</h1>
+  <form method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+      <label>Talent Image</label><br>
+      {{ form.image }}<br>
+    </div>
+
+    <div>
+      <label for="talent_position">Position</label><br>
+      <input required type="text" name="position" list="position-list">
+      <datalist id="position-list">
+        {% for position in positions %}
+          <select id="talent_position">
+            <option value="{{ position.name }}">{{ position.name }}</option>
+          </select>
+        {% endfor %}
+      </datalist>
+    </div>
+
+    <div>
+      <label for="talent_category">Category</label><br>
+      <input required type="text" name="category" list="category-list">
+      <datalist id="category-list">
+        {% for category in categories %}
+          <select id="talent_category">
+            <option value="{{ category.name }}">{{ category.name }}</option>
+          </select>
+        {% endfor %}
+      </datalist>
+    </div>
+
+    <div>
+      <label>Bio</label>
+      <br>
+      {{ form.bio }}<br>
+    </div>
+
+    <div>
+      <label>Upload the CV</label>
+      <br>
+      {{ form.file }}<br>
+    </div>
+
+    <input type="submit" value="Add Profile">
+
+  </form>
+{% endblock %}
+

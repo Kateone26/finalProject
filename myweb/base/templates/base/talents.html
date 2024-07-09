@@ -1,7 +1,5 @@
-<style>
-
-
-</style>
+<br>
+<button><a href="{% url 'add' %}">Add Profile</a></button>
 
 <h1 style="text-align: center; margin:30px 0 30px 0;">{{ heading }}</h1>
 
@@ -23,7 +21,7 @@
       {% for talent in talents %}
         <div class="card" style="width: 18rem; background-color:#C6F5D7;">
           <p style="text-align: center; margin-top:16px;">ID: {{ talent.talentCode }}</p>
-          <img style="max-width:100%; width:100px; height:100px; border-radius:50px; align-self: center; object-fit:cover;" src="{{ talent.image }}" class="card-img-top" alt="...">
+          <img style="max-width:100%; width:100px; height:100px; border-radius:50px; align-self: center; object-fit:cover;" src="{{ talent.image.url }}" class="card-img-top" alt="...">
           <div style="text-align: center;" class="card-body">
             <h5 style="height:50px;" class="card-title">
               {% for position in talent.positions.all %}

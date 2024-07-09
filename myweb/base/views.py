@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Talents, User, Category
+from .models import Talents, User, Category, Position
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-
+from .forms import MyUserCreationForm, TalentForm
 
 
 # Create your views here.
@@ -88,6 +88,111 @@ def logout_user(request):
     return redirect('home')
 
 def registration(request):
-    return render(request, 'base/registration.html')
+    form = MyUserCreationForm()
+
+    if request.method == 'POST':
+        form = MyUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.username = user.username.lower()
+            user.save()
+            login(request, user)
+            return redirect('profile', user.id)
+        else:
+            pass
+
+    context = {'form': form}
+    return render(request, 'base/registration.html', context)
 
 
+def add_cv(request):
+    positions = Position.objects.all()
+    categories = Category.objects.all()
+    form = TalentForm()
+
+    if request.method == 'POST':
+        talent_position = request.POST.get('position')
+        talent_category = request.POST.get('category')
+
+        position, created = Position.objects.get_or_create(name=talent_position)
+        category, created = Category.objects.get_or_create(name=talent_category)
+
+        form = TalentForm(request.POST)
+
+        new_talent = Talents(image=request.FILES['image'], bio=form.data['bio'], file=request.FILES['file'])
+
+        new_talent.save()
+        new_talent.positions.add(position)
+        new_talent.category.add(category)
+        return redirect('home')
+
+    context = {'form': form, 'position': positions, 'category': categories}
+    return render(request, 'base/add_cv.html', context)
+
+
+
+
+
+
+
+
+
+
+# //////////////////////////////////////////////////////////////////////////////////
+# ///////// doesnt submit but shows me the list of positions and categories
+
+# def add_cv(request):
+#     positions = Position.objects.all()
+#     categories = Category.objects.all()
+#     form = TalentForm()
+#
+#     if request.method == 'POST':
+#         form = TalentForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             talent_position = request.POST.get('position')
+#             talent_category = request.POST.get('category')
+#
+#             position, created = Position.objects.get_or_create(name=talent_position)
+#             category, created = Category.objects.get_or_create(name=talent_category)
+#
+#             new_talent = form.save(commit=False)
+#             new_talent.save()
+#             new_talent.positions.add(position)
+#             new_talent.category.add(category)
+#             return redirect('home')
+#
+#     context = {'form': form, 'positions': positions, 'categories': categories}
+#     return render(request, 'base/add_cv.html', context)
+
+
+
+
+
+
+# ///////////////////////////////////////////////////////////////////////
+# ///////// doesnt submit but shows me the list of positions and categories
+
+# def add_cv(request):
+#     positions = Position.objects.all()
+#     categories = Category.objects.all()
+#     form = TalentForm(request.POST or None, request.FILES or None)
+#
+#     if request.method == 'POST':
+#         if form.is_valid():
+#             talent_position_name = form.cleaned_data['position']
+#             talent_category_name = form.cleaned_data['category']
+#
+#             # Retrieve or create Position and Category objects
+#             position, created = Position.objects.get_or_create(name=talent_position_name)
+#             category, created = Category.objects.get_or_create(name=talent_category_name)
+#
+#             # Create a new Talents instance
+#             new_talent = form.save(commit=False)
+#             new_talent.positions.add(position)
+#             new_talent.category.add(category)
+#             new_talent.save()
+#
+#             return redirect('home')
+#
+#     context = {'form': form, 'positions': positions, 'categories': categories}
+#     return render(request, 'base/add_cv.html', context)
