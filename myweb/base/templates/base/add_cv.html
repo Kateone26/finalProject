@@ -52,3 +52,14 @@
   </form>
 {% endblock %}
 
+
+
+<input required type="text" name="author" list="author-list" >
+            <datalist id="author-list">
+                {% for author in authors %}
+                    <select id="book_author">
+                        <option value="{{ author.name }}">{{ author.name }}</option>
+                    </select>
+                {% endfor %}
+
+            </datalist>

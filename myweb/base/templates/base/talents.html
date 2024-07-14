@@ -17,10 +17,10 @@
 
     </div>
 
-    <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center;">
+    <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-bottom:500px">
       {% for talent in talents %}
         <div class="card" style="width: 18rem; background-color:#C6F5D7;">
-          <p style="text-align: center; margin-top:16px;">ID: {{ talent.talentCode }}</p>
+          <p style="text-align: center; margin-top:16px;">ID: {{ talent.talentCode }} <br> ID: {{ talent.id }} Creator: {{ talent.creator }} <br> Created: {{ talent.created }}</p>
           <img style="max-width:100%; width:100px; height:100px; border-radius:50px; align-self: center; object-fit:cover;" src="{{ talent.image.url }}" class="card-img-top" alt="...">
           <div style="text-align: center;" class="card-body">
             <h5 style="height:50px;" class="card-title">
@@ -37,12 +37,16 @@
             </p>
 
             {% if request.user.is_authenticated %}
-              <a href="#" class="btn btn-success">See Profile</a>
+              <a href="{% url 'reading' talent.id %}" class="btn btn-success">See Profile</a>
 
               {% if talent in request.user.talents.all %}
                 <a href="{% url 'delete' talent.id %}" class="btn btn-success">Delete</a>
               {% else %}
                 <a href="{% url 'adding' talent.id %}" class="btn btn-success">Add</a>
+              {% endif %}
+
+              {% if request.user == talent.creator %}
+                <a href="{% url 'delete_cv' talent.id %}" class="btn btn-success">Delete Permanently</a>
               {% endif %}
             {% endif %}
 

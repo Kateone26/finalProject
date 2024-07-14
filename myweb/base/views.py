@@ -5,11 +5,15 @@ from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import MyUserCreationForm, TalentForm
+from .seeder import seeder_func
+from django.contrib import messages
+
 
 
 # Create your views here.
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
+    seeder_func()
     talents = Talents.objects.filter(Q(positions__name__icontains=q) | Q(bio__icontains=q) | Q(talentCode__icontains=q) | Q(skills__name__icontains=q) | Q(category__name__icontains=q)).distinct()
     # talents = list(set(talents))
     # talents = Talents.objects.all()
@@ -34,6 +38,7 @@ def profile(request, pk):
     user = User.objects.get(id=pk)
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     talents = user.talents.filter(Q(positions__name__icontains=q) | Q(bio__icontains=q) | Q(talentCode__icontains=q) | Q(skills__name__icontains=q) | Q(category__name__icontains=q)).distinct()
+    # talents = list(dict.fromkeys(talents))
     # talents = user.talents.all()
     categories = Category.objects.all()
     heading = "My Favourite Freelancers"
@@ -71,14 +76,14 @@ def login_user(request):
         try:
             user = User.objects.get(username=username)
         except:
-            pass
+            messages.error(request, 'User does not exist!')
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
             return redirect('profile', request.user.id)
         else:
-            pass
+            messages.error(request, 'User or password is not correct!')
 
     return render(request, 'base/login.html')
 
@@ -99,7 +104,7 @@ def registration(request):
             login(request, user)
             return redirect('profile', user.id)
         else:
-            pass
+            messages.error(request, 'Follow instructions while creating password')
 
     context = {'form': form}
     return render(request, 'base/registration.html', context)
@@ -119,80 +124,33 @@ def add_cv(request):
 
         form = TalentForm(request.POST)
 
-        new_talent = Talents(image=request.FILES['image'], bio=form.data['bio'], file=request.FILES['file'])
+        new_talent = Talents(image=request.FILES['image'], bio=form.data['bio'], file=request.FILES['file'], creator=request.user)
 
         new_talent.save()
         new_talent.positions.add(position)
         new_talent.category.add(category)
         return redirect('home')
 
-    context = {'form': form, 'position': positions, 'category': categories}
+    context = {'form': form, 'positions': positions, 'categorys': categories}
     return render(request, 'base/add_cv.html', context)
 
 
+def reading(request, id):
+    cv_file = Talents.objects.get(id=id)
+    return render(request, 'base/reading.html', {'cv_file': cv_file})
+
+
+def delete_cv(request, id):
+    obj = Talents.objects.get(id=id)
+
+    if request.method == "POST":
+        obj.image.delete()
+        obj.file.delete()
+        obj.delete()
+        return redirect('home')
+
+    return render(request, 'base/delete.html', {'obj': obj})
 
 
 
 
-
-
-
-
-# //////////////////////////////////////////////////////////////////////////////////
-# ///////// doesnt submit but shows me the list of positions and categories
-
-# def add_cv(request):
-#     positions = Position.objects.all()
-#     categories = Category.objects.all()
-#     form = TalentForm()
-#
-#     if request.method == 'POST':
-#         form = TalentForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             talent_position = request.POST.get('position')
-#             talent_category = request.POST.get('category')
-#
-#             position, created = Position.objects.get_or_create(name=talent_position)
-#             category, created = Category.objects.get_or_create(name=talent_category)
-#
-#             new_talent = form.save(commit=False)
-#             new_talent.save()
-#             new_talent.positions.add(position)
-#             new_talent.category.add(category)
-#             return redirect('home')
-#
-#     context = {'form': form, 'positions': positions, 'categories': categories}
-#     return render(request, 'base/add_cv.html', context)
-
-
-
-
-
-
-# ///////////////////////////////////////////////////////////////////////
-# ///////// doesnt submit but shows me the list of positions and categories
-
-# def add_cv(request):
-#     positions = Position.objects.all()
-#     categories = Category.objects.all()
-#     form = TalentForm(request.POST or None, request.FILES or None)
-#
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             talent_position_name = form.cleaned_data['position']
-#             talent_category_name = form.cleaned_data['category']
-#
-#             # Retrieve or create Position and Category objects
-#             position, created = Position.objects.get_or_create(name=talent_position_name)
-#             category, created = Category.objects.get_or_create(name=talent_category_name)
-#
-#             # Create a new Talents instance
-#             new_talent = form.save(commit=False)
-#             new_talent.positions.add(position)
-#             new_talent.category.add(category)
-#             new_talent.save()
-#
-#             return redirect('home')
-#
-#     context = {'form': form, 'positions': positions, 'categories': categories}
-#     return render(request, 'base/add_cv.html', context)

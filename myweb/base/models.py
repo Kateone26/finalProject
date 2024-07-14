@@ -36,6 +36,13 @@ class Talents(models.Model):
     skills = models.ManyToManyField(Skill, related_name='talents')
     category = models.ManyToManyField(Category, related_name='talents')
     file = models.FileField(null=True)
+    creator = models.ForeignKey('User', on_delete=models.SET("Unknown creator"), related_name='created_talents')
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        # ordering = ["-bio"]
+        ordering = ["created"]
 
     def __str__(self):
         return f"{self.talentCode} {self.positions}"
