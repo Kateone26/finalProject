@@ -38,6 +38,14 @@
         <input name="q" class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
+      {% if request.user.is_authenticated %}
+        <div>
+          <a style="display:flex; align-items:center; gap:10px; margin-left:10px;" href="{% url 'profile' request.user.id %}">
+            <img style="max-width:100%; width:35px; height:35px; border-radius:50px; align-self: center; object-fit:cover;" class="avatar" src="{{ request.user.avatar.url }}">
+            <p style="margin: 0; line-height: 35px;">{{ request.user.username }}</p>
+          </a>
+        </div>
+      {% endif %}
     </div>
   </div>
 </nav>

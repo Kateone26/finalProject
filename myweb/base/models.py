@@ -50,6 +50,8 @@ class Talents(models.Model):
 
 class User(AbstractUser):
     talents = models.ManyToManyField(Talents, related_name='users', blank=True)
+    avatar = models.ImageField(null=True, default='reditprof.png')
+    user_bio = models.TextField(null=True)
 
 
 # name / level / flag / country / hourly rate / monthly rate / categories / language skills / industries / personal info / education / centificates and trainings / experience / projects /

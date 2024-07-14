@@ -4,7 +4,7 @@ from .models import Talents, User, Category, Position
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import MyUserCreationForm, TalentForm
+from .forms import MyUserCreationForm, TalentForm, UserForm
 from .seeder import seeder_func
 from django.contrib import messages
 
@@ -126,9 +126,18 @@ def add_cv(request):
 
         new_talent = Talents(image=request.FILES['image'], bio=form.data['bio'], file=request.FILES['file'], creator=request.user)
 
-        new_talent.save()
-        new_talent.positions.add(position)
-        new_talent.category.add(category)
+        # this code will NOT let us upload pdf folders with same names:
+        if not Talents.objects.filter(file=request.FILES['file']):
+            new_talent.save()
+            new_talent.positions.add(position)
+            new_talent.category.add(category)
+        else:
+            messages.error(request, 'File with the same name already exists')
+
+        # this code will let us upload pdf folders with same names:
+        # new_talent.save()
+        # new_talent.positions.add(position)
+        # new_talent.category.add(category)
         return redirect('home')
 
     context = {'form': form, 'positions': positions, 'categorys': categories}
@@ -152,5 +161,19 @@ def delete_cv(request, id):
     return render(request, 'base/delete.html', {'obj': obj})
 
 
+@login_required(login_url='login')
+def update_user(request):
+    user = request.user
+    form = UserForm(instance=user)
+
+    if request.method == 'POST':
+        print(request.POST)
+        form = UserForm(request.POST, request.FILES, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', user.id)
+
+    context = {'form': form}
+    return render(request, 'base/update_user.html', context)
 
 

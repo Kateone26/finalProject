@@ -14,3 +14,9 @@ class TalentForm(ModelForm):
         model = Talents
         fields = '__all__'
 
+
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['avatar', 'username', 'email', 'user_bio', 'talents']
+
