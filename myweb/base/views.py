@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Talents, User, Category, Position
+from .models import Talents, User, Category, Position, Comment
 from django.db.models import Q
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -110,6 +110,7 @@ def registration(request):
     return render(request, 'base/registration.html', context)
 
 
+@login_required(login_url='login')
 def add_cv(request):
     positions = Position.objects.all()
     categories = Category.objects.all()
@@ -146,7 +147,15 @@ def add_cv(request):
 
 def reading(request, id):
     cv_file = Talents.objects.get(id=id)
-    return render(request, 'base/reading.html', {'cv_file': cv_file})
+    cv_comments = cv_file.comment_set.all()
+    if request.method == "POST":
+        Comment.objects.create(
+            user=request.user,
+            talent=cv_file,
+            body=request.POST.get('body')
+        )
+        return redirect('reading', cv_file.id)
+    return render(request, 'base/reading.html', {'cv_file': cv_file, 'cv_comments': cv_comments})
 
 
 def delete_cv(request, id):
@@ -177,3 +186,13 @@ def update_user(request):
     return render(request, 'base/update_user.html', context)
 
 
+def delete_comment(request, id):
+    comment = Comment.objects.get(id=id)
+    talent = comment.talent
+
+    if request.method == "POST":
+        # obj.comment.delete()
+        comment.delete()
+        return redirect('reading', talent.id)
+
+    return render(request, 'base/delete.html', {'obj': comment})

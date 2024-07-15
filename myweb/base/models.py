@@ -54,4 +54,33 @@ class User(AbstractUser):
     user_bio = models.TextField(null=True)
 
 
+class Comment(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    talent = models.ForeignKey('Talents', on_delete=models.CASCADE)
+    body = models.TextField(max_length=200)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created']
+
+    def __str__(self):
+        return self.body
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # name / level / flag / country / hourly rate / monthly rate / categories / language skills / industries / personal info / education / centificates and trainings / experience / projects /
