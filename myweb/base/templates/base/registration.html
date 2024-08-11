@@ -3,21 +3,27 @@
 {% block title %} <title>Registration</title> {% endblock %}
 
 {% block content %}
-  <h1>Register here:</h1>
-  <form method="POST" action="">
-        {% csrf_token %}
-        <h2>Log in here</h2> <br>
-        {{ form.as_p }}
-<!--        <label>Username:</label><br>-->
-<!--        <input type="text" name="username" placeholder="Username"><br><br>-->
-<!--        <label>Password:</label><br>-->
-<!--        <input type="password" name="password1" placeholder="Password"><br><br>-->
-<!--        <label>Repeat Password:</label><br>-->
-<!--        <input type="password" name="password2" placeholder="Password"><br><br>-->
-        <input type="submit" value="Register">
-        <br><br>
-        <p>Are you registered?</p>
-        <a href="{% url 'login' %}">Login</a>
-    </form>
-{% endblock %}
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 400px; width: 100%; box-sizing: border-box;">
+            <h1 style="text-align: center; margin-bottom: 20px; color: #198754; font-size: 24px; font-weight: bold;">Register here:</h1>
+            <form method="POST" action="" style="display: flex; flex-direction: column; gap: 20px;">
+                {% csrf_token %}
 
+                <label for="username" style="font-weight: bold; color: #333; font-size: 16px;">Username:</label>
+                <input type="text" name="username" placeholder="Username" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px;">
+
+                <label for="password1" style="font-weight: bold; color: #333; font-size: 16px;">Password:</label>
+                <input type="password" name="password1" placeholder="Password" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px;">
+
+                <label for="password2" style="font-weight: bold; color: #333; font-size: 16px;">Repeat Password:</label>
+                <input type="password" name="password2" placeholder="Repeat Password" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px;">
+
+                <input type="submit" value="Register" class="btn btn-success">
+            </form>
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="margin-bottom: 10px; color: #333; font-size: 14px;">Already registered?</p>
+                <a href="{% url 'login' %}" style="color: #198754; text-decoration: none; font-weight: bold; font-size: 16px;">Login</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

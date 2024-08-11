@@ -1,29 +1,28 @@
 <br>
-<button><a href="{% url 'add' %}">Add Profile</a></button>
+<a class="btn btn-success" href="{% url 'add' %}">Add Profile</a>
 
-<h1 style="text-align: center; margin:30px 0 30px 0;">{{ heading }}</h1>
+<h1 style="text-align: center; margin:30px 0 30px 0; color: #198754;">{{ heading }}</h1>
 
 <div style="display: flex; gap:50px;">
-    <div style="margin-left:30px;">
-      <h2>Categories:</h2>
-      <br>
-      <hr>
-      <a href="{{ request.path }}"><p>All</p></a>
-      {% for category in categories %}
-        <hr>
-        <a href="{{ request.path }}?q={{ category.name }}"><p>{{ category }}</p></a>
-      {% endfor %}
-      <hr>
-
+    <div style="margin-left: 30px; font-family: Arial, sans-serif; color: #333;">
+        <h2 style="font-size: 22px; color: #198754; margin-bottom: 10px;">Categories:</h2>
+        <hr style="border: 1px solid #198754; margin-bottom: 15px;">
+        <a href="{{ request.path }}" style="display: block; color: #198754; text-decoration: none; font-size: 18px; margin-bottom: 10px; font-weight: bold;">All</a>
+        {% for category in categories %}
+            <hr style="border: 1px solid #198754; margin-bottom: 15px;">
+            <a href="{{ request.path }}?q={{ category.name }}" style="display: block; color: #198754; text-decoration: none; font-size: 18px; margin-bottom: 10px;">{{ category }}</a>
+        {% endfor %}
+        <hr style="border: 1px solid #198754; margin-top: 15px;">
     </div>
+
 
     <div style="display:flex; gap:20px; flex-wrap:wrap; justify-content:center; margin-bottom:500px">
       {% for talent in talents %}
-        <div class="card" style="width: 18rem; background-color:#C6F5D7;">
+        <div class="card" style=" width: 18rem; background-color:#C6F5D7;">
           <p style="text-align: center; margin-top:16px;">ID: {{ talent.talentCode }} <br> ID: {{ talent.id }} Creator: {{ talent.creator }} <br> Created: {{ talent.created }}</p>
           <img style="max-width:100%; width:100px; height:100px; border-radius:50px; align-self: center; object-fit:cover;" src="{{ talent.image.url }}" class="card-img-top" alt="...">
           <div style="text-align: center;" class="card-body">
-            <h5 style="height:50px;" class="card-title">
+            <h5 style="height:50px; color:#198754;" class="card-title">
               {% for position in talent.positions.all %}
                 {{ position.name }}{% if not forloop.last %}, {% endif %}
               {% endfor %}
@@ -46,7 +45,7 @@
               {% endif %}
 
               {% if request.user == talent.creator %}
-                <a href="{% url 'delete_cv' talent.id %}" class="btn btn-success">Delete Permanently</a>
+                <a style="margin-top:5px" href="{% url 'delete_cv' talent.id %}" class="btn btn-success">Delete Permanently</a>
               {% endif %}
             {% endif %}
 

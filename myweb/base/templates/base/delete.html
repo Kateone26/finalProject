@@ -3,11 +3,17 @@
 {% block title %} <title>Delete</title> {% endblock %}
 
 {% block content %}
-    <h1>Delete Page</h1><br>
-    <form method="POST" action="">
-        {% csrf_token %}
-        <h2>Are you sure you want to delete "{{ obj }}"?</h2> <br>
-        <input type="submit" value="Delete">
+  <div style="max-width: 500px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f8f9fa; text-align: center;">
+    <h1 style="margin-bottom: 20px; font-size: 24px; color: #333;">Delete Confirmation</h1>
 
+    <form method="POST" action="" style="display: flex; flex-direction: column; align-items: center;">
+      {% csrf_token %}
+      <p style="font-size: 18px; color: #555;">Are you sure you want to delete "{{ obj }}"?</p>
+
+      <div style="margin-top: 20px;">
+        <input type="submit" value="Delete" class="btn btn-danger">
+        <a href="{% url 'home' %}" class="btn btn-success" style="background-color: #6c757d;">Cancel</a>
+      </div>
     </form>
+  </div>
 {% endblock %}

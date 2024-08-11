@@ -9,7 +9,6 @@ from .seeder import seeder_func
 from django.contrib import messages
 
 
-
 # Create your views here.
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -29,8 +28,8 @@ def about(request):
     return render(request, 'base/about.html')
 
 
-def test(request):
-    return render(request, 'base/test.html')
+# def test(request):
+#     return render(request, 'base/test.html')
 
 
 @login_required(login_url='login')
@@ -91,6 +90,7 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return redirect('home')
+
 
 def registration(request):
     form = MyUserCreationForm()

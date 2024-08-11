@@ -48,6 +48,7 @@ class Talents(models.Model):
         # return f"{self.talentCode} {self.positions}"
         return f"{self.talentCode} - {', '.join([position.name for position in self.positions.all()])}"
 
+
 class User(AbstractUser):
     talents = models.ManyToManyField(Talents, related_name='users', blank=True)
     avatar = models.ImageField(null=True, default='reditprof.png')

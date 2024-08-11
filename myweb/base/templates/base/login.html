@@ -3,16 +3,23 @@
 {% block title %} <title>Login</title> {% endblock %}
 
 {% block content %}
-    <h1 style="text-align:center;">Login Page</h1>
-    <form method="POST" action="" style="margin:0 auto;">
-        {% csrf_token %}
-        <label>Username:</label><br>
-        <input type="text" name="username" placeholder="Username"><br>
-        <label>Password:</label><br>
-        <input type="password" name="password" placeholder="Password"><br>
-        <input type="submit" value="Login">
-        <br><br>
-        <p>Wanna sign up?</p>
-        <a href="{% url 'registration' %}">Register</a>
-    </form>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+        <div style="background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); max-width: 400px; width: 100%;">
+            <h1 style="text-align: center; margin-bottom: 20px; color: #198754;">Login Page</h1>
+            <form method="POST" action="" style="display: flex; flex-direction: column; gap: 15px;">
+                {% csrf_token %}
+                <label for="username" style="font-weight: bold;">Username:</label>
+                <input id="username" type="text" name="username" placeholder="Username" style="padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 16px;">
+
+                <label for="password" style="font-weight: bold;">Password:</label>
+                <input id="password" type="password" name="password" placeholder="Password" style="padding: 10px; border: 1px solid #ced4da; border-radius: 4px; font-size: 16px;">
+
+                <input type="submit" value="Login" class="btn btn-success">
+            </form>
+            <div style="text-align: center; margin-top: 20px;">
+                <p style="margin-bottom: 10px;">Want to sign up?</p>
+                <a href="{% url 'registration' %}" style="color: #198754; text-decoration: none; font-weight: bold;">Register</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

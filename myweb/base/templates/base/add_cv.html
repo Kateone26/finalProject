@@ -3,63 +3,46 @@
 {% block title %} <title>Add CV</title> {% endblock %}
 
 {% block content %}
-  <h1>Add your CV here:</h1>
-  <form method="POST" action="" enctype="multipart/form-data">
+  <h1 style="text-align: center; margin-bottom: 30px; font-size: 24px; color: #333;">Add Your CV Here</h1>
+
+  <form method="POST" action="" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
     {% csrf_token %}
-    <div>
-      <label>Talent Image</label><br>
-      {{ form.image }}<br>
+
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Talent Image</label>
+      {{ form.image }}
     </div>
 
-    <div>
-      <label for="talent_position">Position</label><br>
+    <div style="margin-bottom: 20px;">
+      <label for="talent_position" style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Position</label>
       <input required type="text" name="position" list="position-list">
       <datalist id="position-list">
         {% for position in positions %}
-          <select id="talent_position">
-            <option value="{{ position.name }}">{{ position.name }}</option>
-          </select>
+          <option value="{{ position.name }}">{{ position.name }}</option>
         {% endfor %}
       </datalist>
     </div>
 
-    <div>
-      <label for="talent_category">Category</label><br>
+    <div style="margin-bottom: 20px;">
+      <label for="talent_category" style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Category</label>
       <input required type="text" name="category" list="category-list">
       <datalist id="category-list">
         {% for category in categories %}
-          <select id="talent_category">
-            <option value="{{ category.name }}">{{ category.name }}</option>
-          </select>
+          <option value="{{ category.name }}">{{ category.name }}</option>
         {% endfor %}
       </datalist>
     </div>
 
-    <div>
-      <label>Bio</label>
-      <br>
-      {{ form.bio }}<br>
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Bio</label>
+      {{ form.bio }}
     </div>
 
-    <div>
-      <label>Upload the CV</label>
-      <br>
-      {{ form.file }}<br>
+    <div style="margin-bottom: 20px;">
+      <label style="display: block; margin-bottom: 8px; font-weight: bold; color: #555;">Upload the CV</label>
+      {{ form.file }}
     </div>
 
-    <input type="submit" value="Add Profile">
-
+    <input type="submit" value="Add Profile" class="btn btn-success" style="width: 100%;">
   </form>
 {% endblock %}
-
-
-
-<input required type="text" name="author" list="author-list" >
-            <datalist id="author-list">
-                {% for author in authors %}
-                    <select id="book_author">
-                        <option value="{{ author.name }}">{{ author.name }}</option>
-                    </select>
-                {% endfor %}
-
-            </datalist>
